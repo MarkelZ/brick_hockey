@@ -6,7 +6,7 @@ import config
 class Debugwriter:
     def __init__(self):
         self.stack = []
-        self.debugfont = pygame.font.Font(config.debugfontpath, 20)
+        self.debugfont = pygame.font.Font(config.debugfontpath, 24)
 
     def writeln(self, text):
         self.stack.append(text)
@@ -14,11 +14,11 @@ class Debugwriter:
     def clear(self):
         self.stack = []
 
-    def draw(self, win, color=(216, 216, 216)):
+    def draw(self, win, color=(255, 255, 255)):
         separation = 16
         height = 0
         for i in range(len(self.stack)):
             textsurface = self.debugfont.render(
-                self.stack[i], False, color)
+                self.stack[i], True, color)
             win.blit(textsurface, (0, height))
             height += separation
