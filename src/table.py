@@ -4,8 +4,8 @@ from brick import Brick
 
 class Table:
     def __init__(self):
-        self.bricks = []
-        self.balls = []
+        self.bricks = [Brick(64, 200, 100, 32)]
+        self.balls = [Ball(240, 600)]
 
     def update(self):
         for ball in self.balls:
