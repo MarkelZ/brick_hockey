@@ -30,7 +30,8 @@ class Game:
     def update(self):
         self.dw.clear()
         self.table.update()
-        self.dw.writeln('debug text here')
+        self.dw.writeln('Balls: ' + str(len(self.table.balls)))
+        self.dw.writeln('Bricks: ' + str(len(self.table.bricks)))
 
     def draw(self):
         self.win.fill((0, 0, 0))
