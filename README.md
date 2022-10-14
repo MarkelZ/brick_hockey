@@ -1,4 +1,4 @@
-# Physics Game
+# Brick Hockey
 
 ## Description
 
