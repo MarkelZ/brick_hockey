@@ -4,6 +4,7 @@ from math import floor
 
 from debugwriter import Debugwriter
 from table import Table
+from ballshooter import BallShooter
 import config
 
 
@@ -14,6 +15,7 @@ class Game:
         self.win = pygame.display.set_mode(config.screenres)
         self.dw = Debugwriter()
         self.table = Table()
+        self.bs = BallShooter(self.table)
 
     def run(self):
         run = True
@@ -30,11 +32,13 @@ class Game:
     def update(self):
         self.dw.clear()
         self.table.update()
+        self.bs.update()
         self.dw.writeln('Balls: ' + str(len(self.table.balls)))
         self.dw.writeln('Bricks: ' + str(len(self.table.bricks)))
 
     def draw(self):
         self.win.fill((0, 0, 0))
         self.table.draw(self.win)
+        self.bs.draw(self.win)
         self.dw.draw(self.win)
         pygame.display.update()

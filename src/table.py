@@ -16,7 +16,7 @@ class Table:
                        Brick(200, 200, 100,  num=4)]
         self.balls = [Ball(self, Vector2(240, 600), Vector2(1, -1))]
         self.balls_to_remove = []
-        self.sim_numiters = 6
+        self.sim_numiters = 1
 
     def update(self):
         # Update balls

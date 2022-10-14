@@ -4,14 +4,15 @@ from pygame.math import Vector2
 
 class Ball:
     DEFAULT_RADIUS = 4
-    DEFAULT_SPEED = 2.0
+    DEFAULT_SPEED = 10.0
+    DEFAULT_COLOR = (255, 255, 255)
 
     def __init__(self, table, position, direction):
         self.table = table
         self.p = position
         self.d = Ball.DEFAULT_SPEED * Vector2.normalize(direction)
         self.radius = Ball.DEFAULT_RADIUS
-        self.color = (255, 255, 255)
+        self.color = Ball.DEFAULT_COLOR
 
     def update(self):
         for _ in range(self.table.sim_numiters):
