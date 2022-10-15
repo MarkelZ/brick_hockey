@@ -30,11 +30,14 @@ class GameState:
             # If space is pressed, shoot balls
             if pygame.key.get_pressed()[pygame.K_SPACE]:
                 self.bs.shoot_balls()
+                self.table.generate_and_shift_bricks()
                 self.state = State.BOUNCING
         elif self.state == State.BOUNCING:
             # If all balls are gone, switch to shooting state
             if len(self.table.balls) == 0 and not self.bs.is_shooting:
-                self.state = State.SHOOTING
+                self.state = State.SHIFTING
+        elif self.state == State.SHIFTING:
+            pass
 
     def draw(self, sfc):
         self.bs.draw(sfc, draw_laser=self.state == State.SHOOTING)

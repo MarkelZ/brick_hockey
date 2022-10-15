@@ -1,4 +1,3 @@
-from ssl import ALERT_DESCRIPTION_BAD_CERTIFICATE
 from ball import Ball
 from brick import Brick
 from coin import Coin
@@ -31,6 +30,7 @@ class Table:
         self.balls_to_remove = []
         self.colliders = []
         self.sim_numiters = 1
+        self.is_shifting = False
 
         # Collision with edges of the screen
         self.colliders += [Collider(0, 0, 0, self.height, None, True),
@@ -81,31 +81,36 @@ class Table:
     # Shift all bricks downwards and generate next row.
     # Happens right before gamestate switches to shooting state
     def generate_and_shift_bricks(self):
-        pass
+        self.is_shifting = True
 
     def update(self):
-        # Update balls
-        for ball in self.balls:
-            ball.update()
+        if self.is_shifting:
+            pass
+        else:
+            # Update balls
+            for ball in self.balls:
+                ball.update()
 
-        # Update bricks
-        for brick in self.bricks:
-            brick.update()
+            # Update bricks
+            for brick in self.bricks:
+                brick.update()
 
-        # Update coins
-        for coin in self.coins:
-            coin.update()
+            # Update coins
+            for coin in self.coins:
+                coin.update()
 
-        # Remove depleted bricks
-        self._purge_bricks()
+            # Remove depleted bricks
+            self._purge_bricks()
 
-        # Remove balls
-        self.balls = [b for b in self.balls if b not in self.balls_to_remove]
-        self.balls_to_remove = []
+            # Remove balls
+            self.balls = [
+                b for b in self.balls if b not in self.balls_to_remove]
+            self.balls_to_remove = []
 
-        # Remove coins
-        self.coins = [c for c in self.coins if c not in self.coins_to_remove]
-        self.coins_to_remove = []
+            # Remove coins
+            self.coins = [
+                c for c in self.coins if c not in self.coins_to_remove]
+            self.coins_to_remove = []
 
     def draw(self, sfc):
         # Draw bricks
