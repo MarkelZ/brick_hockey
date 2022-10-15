@@ -11,14 +11,19 @@ class BallShooter:
         self.y = table.height - 16
         self.ball = Ball(table, Vector2(self.x, self.y), Vector2(1, 1))
 
+    def _get_mouse_direction(self):
+        return pygame.mouse.get_pos() - Vector2(self.x, self.y)
+
     def update(self):
-        pass
+        # Debug
+        if pygame.key.get_pressed()[pygame.K_SPACE]:
+            self.table.balls.append(
+                Ball(self.table, Vector2(self.x, self.y), self._get_mouse_direction()))
 
     def draw(self, sfc):
         # Draw laser line
         # Give ball direction towards mouse pointer
-        direction = (pygame.mouse.get_pos() -
-                     Vector2(self.x, self.y)).normalize()
+        direction = self._get_mouse_direction().normalize()
         self.ball.d = Ball.DEFAULT_SPEED * direction
 
         # Calculate numsteps amount of steps of the ball
@@ -31,9 +36,9 @@ class BallShooter:
             yy.append(self.ball.p.y)
 
         # Draw line segments of laser in reverse order to avoid overlap
-        xyb = list(zip(xx, yy, np.linspace(1, 0, numsteps)))
+        xyb = list(zip(xx, yy, np.linspace(1, 0.5, numsteps)))
         xyb.reverse()
-        prev = Vector2(xx[0], yy[0])
+        prev = Vector2(xx[-1], yy[-1])
         for (x, y, bright) in xyb:
             pos = Vector2(x, y)
             pygame.draw.line(sfc, (255 * bright, 0, 0), prev, pos, width=4)
