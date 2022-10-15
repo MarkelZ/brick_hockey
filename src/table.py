@@ -1,6 +1,7 @@
 from ssl import ALERT_DESCRIPTION_BAD_CERTIFICATE
 from ball import Ball
 from brick import Brick
+from coin import Coin
 import pygame
 from pygame.math import Vector2
 import config
@@ -23,6 +24,7 @@ class Table:
         self.width = config.screenres[0]
         self.height = config.screenres[1]
         self.bricks = []
+        self.coins = []
         self.balls = []
         self.balls_to_remove = []
         self.colliders = []
@@ -43,6 +45,9 @@ class Table:
               Brick(200, 200, size=100,  num=128)]
         for b in bb:
             self.addbrick(b)
+
+        coin = Coin(50, 150)
+        self.coins.append(coin)
 
     # Add brick and its colliders to table
     def addbrick(self, brick):
@@ -95,3 +100,7 @@ class Table:
         # Draw balls
         for ball in self.balls:
             ball.draw(sfc)
+
+        # Draw coins
+        for coin in self.coins:
+            coin.draw(sfc)
