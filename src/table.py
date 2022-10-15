@@ -72,11 +72,16 @@ class Table:
                      brick, False))
 
     # Remove bricks with number less than or equal to 0
-    def purge_bricks(self):
+    def _purge_bricks(self):
         depleted_bricks = [b for b in self.bricks if b.num <= 0]
         self.colliders = [
             col for col in self.colliders if col.colobj not in depleted_bricks]
         self.bricks = [b for b in self.bricks if b.num > 0]
+
+    # Shift all bricks downwards and generate next row.
+    # Happens right before gamestate switches to shooting state
+    def generate_and_shift_bricks(self):
+        pass
 
     def update(self):
         # Update balls
@@ -92,7 +97,7 @@ class Table:
             coin.update()
 
         # Remove depleted bricks
-        self.purge_bricks()
+        self._purge_bricks()
 
         # Remove balls
         self.balls = [b for b in self.balls if b not in self.balls_to_remove]

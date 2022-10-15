@@ -1,8 +1,15 @@
-from lzma import is_check_supported
 import pygame
+from enum import Enum
+
 from table import Table
 from ballshooter import BallShooter
 from debugwriter import DebugWriter
+
+
+class State(Enum):
+    SHOOTING = 0
+    BOUNCING = 1
+    SHIFTING = 2
 
 
 class GameState:
@@ -10,26 +17,26 @@ class GameState:
         self.table = Table(self)
         self.bs = BallShooter(self.table)
         self.dw = DebugWriter()
-        self.is_shooting = False
+        self.state = State.SHOOTING
 
     def update(self):
         self.dw.clear()
         self.bs.update()
         self.table.update()
         self.dw.writeln(
-            'Balls: ' + str(self.bs.num_balls if self.is_shooting else self.bs.balls_to_shoot))
+            'Balls: ' + str(self.bs.balls_to_shoot if self.state == State.BOUNCING else self.bs.num_balls))
 
-        if self.is_shooting:
+        if self.state == State.SHOOTING:
             # If space is pressed, shoot balls
             if pygame.key.get_pressed()[pygame.K_SPACE]:
                 self.bs.shoot_balls()
-                self.is_shooting = False
-        else:
+                self.state = State.BOUNCING
+        elif self.state == State.BOUNCING:
             # If all balls are gone, switch to shooting state
             if len(self.table.balls) == 0 and not self.bs.is_shooting:
-                self.is_shooting = True
+                self.state = State.SHOOTING
 
     def draw(self, sfc):
-        self.bs.draw(sfc, draw_laser=self.is_shooting)
+        self.bs.draw(sfc, draw_laser=self.state == State.SHOOTING)
         self.table.draw(sfc)
         self.dw.draw(sfc)
