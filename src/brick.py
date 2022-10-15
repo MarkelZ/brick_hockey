@@ -10,9 +10,13 @@ class Brick:
         self.size = size
         self.txtcolor = (0, 0, 0)
         self.font = pygame.font.Font('content/sans.ttf', round(size * 0.5))
-        self._calculate_color()
+        self._update_base_color()
+        self.color = self.base_color
+        self.is_animation = False
+        self.animation_ctr = 0
+        self.animation_time = 10
 
-    def _calculate_color(self):
+    def _update_base_color(self):
         # Choose color's hue based on num
         color_range = 100
         color_channel = (self.num // color_range) % 3
@@ -25,12 +29,25 @@ class Brick:
         color = [c + 50 for c in color]
         color = [255 if c > 255 else c for c in color]
 
-        self.color = color
+        self.base_color = color
 
     def damage(self):
         self.num -= 1
-        self._calculate_color()
-        # Do hit animation
+        self._update_base_color()
+        self.is_animation = True
+        self.animation_ctr = 0
+
+    def update(self):
+        if self.is_animation:
+            self.animation_ctr += 1
+
+            brightness = 128.0 * (1 - self.animation_ctr / self.animation_time)
+            self.color = [c + brightness for c in self.base_color]
+            self.color = [255 if c > 255 else c for c in self.color]
+
+            if self.animation_ctr >= self.animation_time:
+                self.is_animation = False
+                self.color = self.base_color
 
     def draw(self, sfc):
         # Draw rectangle

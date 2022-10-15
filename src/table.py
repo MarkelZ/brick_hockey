@@ -76,6 +76,10 @@ class Table:
         for ball in self.balls:
             ball.update()
 
+        # Update bricks
+        for brick in self.bricks:
+            brick.update()
+
         # Remove depleted bricks
         self.purge_bricks()
 
