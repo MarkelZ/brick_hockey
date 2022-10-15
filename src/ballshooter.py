@@ -16,7 +16,8 @@ class BallShooter:
 
     def update(self):
         # Debug
-        pass
+        if pygame.key.get_pressed()[pygame.K_SPACE]:
+            self.shoot_ball()
 
     def shoot_ball(self):
         self.table.balls.append(

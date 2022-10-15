@@ -75,7 +75,7 @@ class Ball:
 
             # Decrease brick's number
             if damage_brick and mincol[1].colobj != None:
-                mincol[1].colobj.num -= 1
+                mincol[1].colobj.damage()
 
         # If the ball hits the bottom of the screen, delete
         if self.p.y > self.table.height:

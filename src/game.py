@@ -23,10 +23,6 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
-                # This is for debugging
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE:
-                        self.gamestate.bs.shoot_ball()
 
     def update(self):
         self.gamestate.update()
