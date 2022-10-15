@@ -3,7 +3,7 @@ import pygame
 import config
 
 
-class Debugwriter:
+class DebugWriter:
     def __init__(self):
         self.stack = []
         self.debugfont = pygame.font.Font(config.debugfontpath, 24)

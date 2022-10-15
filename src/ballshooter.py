@@ -16,9 +16,11 @@ class BallShooter:
 
     def update(self):
         # Debug
-        if pygame.key.get_pressed()[pygame.K_SPACE]:
-            self.table.balls.append(
-                Ball(self.table, Vector2(self.x, self.y), self._get_mouse_direction()))
+        pass
+
+    def shoot_ball(self):
+        self.table.balls.append(
+            Ball(self.table, Vector2(self.x, self.y), self._get_mouse_direction()))
 
     def draw(self, sfc):
         # Draw laser line

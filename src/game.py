@@ -1,11 +1,7 @@
-import imp
 import pygame
 from math import floor
 
-from debugwriter import Debugwriter
-from table import Table
-from ball import Ball
-from ballshooter import BallShooter
+from gamestate import GameState
 import config
 
 
@@ -14,9 +10,7 @@ class Game:
         pygame.init()
         pygame.display.set_caption(config.title)
         self.win = pygame.display.set_mode(config.screenres)
-        self.dw = Debugwriter()
-        self.table = Table()
-        self.bs = BallShooter(self.table)
+        self.gamestate = GameState()
 
     def run(self):
         run = True
@@ -29,18 +23,15 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
+                # This is for debugging
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        self.gamestate.bs.shoot_ball()
 
     def update(self):
-        self.dw.clear()
-
-        self.bs.update()
-        self.table.update()
-        self.dw.writeln('Balls: ' + str(len(self.table.balls)))
-        self.dw.writeln('Bricks: ' + str(len(self.table.bricks)))
+        self.gamestate.update()
 
     def draw(self):
         self.win.fill((0, 0, 0))
-        self.bs.draw(self.win)
-        self.table.draw(self.win)
-        self.dw.draw(self.win)
+        self.gamestate.draw(self.win)
         pygame.display.update()

@@ -26,7 +26,7 @@ class Table:
         self.balls = []
         self.balls_to_remove = []
         self.colliders = []
-        self.sim_numiters = 2
+        self.sim_numiters = 1
 
         # Collision with edges of the screen
         self.colliders += [Collider(0, 0, 0, self.height, None, True),
