@@ -19,12 +19,14 @@ class Collider:
 
 
 class Table:
-    def __init__(self):
+    def __init__(self, gamestate):
         # Initialize vars
+        self.gamestate = gamestate
         self.width = config.screenres[0]
         self.height = config.screenres[1]
         self.bricks = []
         self.coins = []
+        self.coins_to_remove = []
         self.balls = []
         self.balls_to_remove = []
         self.colliders = []
@@ -85,12 +87,20 @@ class Table:
         for brick in self.bricks:
             brick.update()
 
+        # Update coins
+        for coin in self.coins:
+            coin.update()
+
         # Remove depleted bricks
         self.purge_bricks()
 
         # Remove balls
         self.balls = [b for b in self.balls if b not in self.balls_to_remove]
         self.balls_to_remove = []
+
+        # Remove coins
+        self.coins = [c for c in self.coins if c not in self.coins_to_remove]
+        self.coins_to_remove = []
 
     def draw(self, sfc):
         # Draw bricks

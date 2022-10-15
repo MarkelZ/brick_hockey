@@ -7,7 +7,7 @@ from debugwriter import DebugWriter
 
 class GameState:
     def __init__(self):
-        self.table = Table()
+        self.table = Table(self)
         self.bs = BallShooter(self.table)
         self.dw = DebugWriter()
         self.is_shooting = False

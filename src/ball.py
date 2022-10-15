@@ -22,10 +22,10 @@ class Ball:
         for coin in self.table.coins:
             if coin.triggered:
                 continue
-            if self.p.distance_squared_to(coin.p) + pad >= (self.radius + coin.radius)**2:
+            if self.p.distance_squared_to(coin.p) + pad <= (self.radius + coin.radius)**2:
                 coin.triggered = True
-                # self.table.coins.remove(coin)
-                # Give extra ball
+                self.table.coins_to_remove.append(coin)
+                self.table.gamestate.bs.num_balls += 1
 
     def cross(v, w):
         return v.x * w.y - v.y * w.x
