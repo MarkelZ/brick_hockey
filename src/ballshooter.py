@@ -10,7 +10,7 @@ class BallShooter:
         self.x = table.width / 2
         self.y = table.height - 16
         self.ball = Ball(table, Vector2(self.x, self.y), Vector2(1, 1))
-        self.num_balls = 10
+        self.num_balls = 1
         self.balls_to_shoot = 0
         self.is_shooting = False
         self.shoot_delay = 3

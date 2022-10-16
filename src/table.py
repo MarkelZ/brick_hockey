@@ -4,6 +4,7 @@ from coin import Coin
 import pygame
 from pygame.math import Vector2
 import config
+from random import choice, randint
 
 
 # Line-segment collider object
@@ -26,6 +27,7 @@ class Table:
         self.gridwidth = 7
         self.gridheight = 7
         self.bricksize = self.width / self.gridwidth
+        self.half_bricksize = self.bricksize / 2
         self.bricks = []
         self.coins = []
         self.coins_to_remove = []
@@ -40,15 +42,8 @@ class Table:
                                     self.height, None, True),
                            Collider(0, 0, self.width, 0, None, False)]
 
-        # Debug: add some bricks for testing
-        for i in range(4):
-            for j in range(1, 3):
-                b = Brick(i * self.bricksize, j * self.bricksize,
-                          size=self.bricksize + 1, num=128)
-                self.addbrick(b)
-
-        coin = Coin(self.bricksize * 0.5, self.bricksize * 3.5)
-        self.coins.append(coin)
+        # Generate first row of bricks
+        self._generate_row(1)
 
     # Add brick and its colliders to table
     def addbrick(self, brick):
@@ -77,6 +72,27 @@ class Table:
             col for col in self.colliders if col.colobj not in depleted_bricks]
         self.bricks = [b for b in self.bricks if b.num > 0]
 
+    def _generate_row(self, num_balls):
+        coinpos = randint(0, self.gridwidth - 1)
+        coin = Coin(self.bricksize * (coinpos + 0.5),
+                    self.bricksize + self.half_bricksize)
+        self.coins.append(coin)
+
+        for i in range(self.gridwidth):
+            # Do not generate on top of coin
+            if i == coinpos:
+                continue
+
+            # 50% chance to generate a brick in each position
+            if choice([False, True]):
+                num = num_balls
+                # 25% chance of doubling the number
+                if randint(0, 3) == 0:
+                    num *= 2
+                b = Brick(i * self.bricksize, self.bricksize,
+                          size=self.bricksize + 1, num=num)
+                self.addbrick(b)
+
     # Shift all bricks downwards and generate next row.
     # Happens right before gamestate switches to shooting state
     def generate_and_shift_bricks(self):
@@ -91,9 +107,10 @@ class Table:
             col.y0 += self.bricksize
             col.y1 += self.bricksize
 
-        # TODO: If bricks reach the player, game over
+        # TODO: Game over if bricks reach the player
 
         # Generate new bricks
+        self._generate_row(self.gamestate.bs.num_balls)
 
     def update(self):
         # Update balls

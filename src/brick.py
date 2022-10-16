@@ -1,4 +1,5 @@
 import pygame
+from math import log2, ceil
 
 
 class Brick:
@@ -18,9 +19,10 @@ class Brick:
 
     def _update_base_color(self):
         # Choose color's hue based on num
-        color_range = 100
-        color_channel = (self.num // color_range) % 3
-        hue = 255 - round(255.0 * (self.num % color_range) / color_range)
+        color_range = 2
+        value = ceil(log2(self.num))
+        color_channel = (value // color_range) % 3
+        hue = 255 - round(255.0 * (value % color_range) / color_range)
         color = [0, 0, 0]
         color[color_channel] = hue
         color[(color_channel + 1) % 3] = 255 - hue
@@ -33,9 +35,10 @@ class Brick:
 
     def damage(self):
         self.num -= 1
-        self._update_base_color()
         self.is_animation = True
         self.animation_ctr = 0
+        if self.num > 0:
+            self._update_base_color()
 
     def update(self):
         if self.is_animation:
