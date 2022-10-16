@@ -4,8 +4,6 @@
 
 This is a game where you shoot balls at bricks.
 
-![screenshot](thumbnail.png)
-
 ## Dependencies
 
 - Pygame 2.0.1
@@ -21,3 +19,7 @@ python3 main.py
 
 ## License
 This code is licensed under the terms of the MIT license.
+
+## Screenshot
+
+![screenshot](thumbnail.png)
