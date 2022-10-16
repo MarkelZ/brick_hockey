@@ -117,7 +117,7 @@ class Table:
         for coin in self.coins:
             coin.p.y += self.bricksize
 
-        for col in self.colliders[4:]:
+        for col in self.colliders[3:]:
             col.y0 += self.bricksize
             col.y1 += self.bricksize
 
