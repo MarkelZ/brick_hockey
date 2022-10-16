@@ -18,12 +18,19 @@ class GameState:
         self.dw = DebugWriter()
         self.state = State.SHOOTING
 
+    def key_pressed(self, key):
+        if key == pygame.K_RIGHT:
+            self.table.increase_sim_speed()
+        elif key == pygame.K_LEFT:
+            self.table.decrease_sim_speed()
+
     def update(self):
         self.dw.clear()
         self.bs.update()
         self.table.update()
         self.dw.writeln(
-            'Balls: ' + str(self.bs.balls_to_shoot if self.state == State.BOUNCING else self.bs.num_balls))
+            'Balls: ' + str(self.bs.balls_to_shoot if self.state == State.BOUNCING else self.bs.num_balls) +
+            '; Speed: ' + str(self.table.sim_numiters))
 
         if self.state == State.SHOOTING:
             # If space is pressed, shoot balls

@@ -45,6 +45,14 @@ class Table:
         # Generate first row of bricks
         self._generate_row(1)
 
+    def increase_sim_speed(self):
+        if self.sim_numiters < 4:
+            self.sim_numiters += 1
+
+    def decrease_sim_speed(self):
+        if self.sim_numiters > 1:
+            self.sim_numiters -= 1
+
     # Add brick and its colliders to table
     def addbrick(self, brick):
         self.bricks.append(brick)
