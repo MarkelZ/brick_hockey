@@ -4,6 +4,8 @@
 
 This is a game where you shoot balls at bricks.
 
+![screenshot](thumbnail.png)
+
 ## Dependencies
 
 - Pygame 2.0.1
