@@ -35,6 +35,7 @@ class Table:
         self.balls_to_remove = []
         self.colliders = []
         self.sim_numiters = 1
+        self.first_ball_position = None
 
         # Collision with edges of the screen
         self.colliders += [Collider(0, 0, 0, self.height, None, True),
@@ -72,6 +73,11 @@ class Table:
             Collider(brick.x, brick.y + brick.size,
                      brick.x + brick.size, brick.y + brick.size,
                      brick, False))
+
+    def removeball(self, ball):
+        self.balls_to_remove.append(ball)
+        if self.first_ball_position == None:
+            self.first_ball_position = ball.p.x
 
     # Remove bricks with number less than or equal to 0
     def _purge_bricks(self):

@@ -56,7 +56,11 @@ class Ball:
         else:
             return None
 
-    def step(self, damage_brick=True):
+    def step(self, is_ghost=False):
+        # Whether the ball has collided with a surface after doing the step
+        # Value to be returned by this function
+        bounced = False
+
         # Move ball
         prevpos = self.p
         self.p = self.p + self.d
@@ -68,6 +72,9 @@ class Ball:
 
         # If there are any collisions, solve
         if len(collisions) > 0:
+            # Ball has collided
+            bounced = True
+
             # Find the closest collision
             mincol = min(collisions,
                          key=lambda u: prevpos.distance_squared_to(u[0]))
@@ -82,12 +89,14 @@ class Ball:
                 self.d.y *= -1
 
             # Decrease brick's number
-            if damage_brick and mincol[1].colobj != None:
+            if not is_ghost and mincol[1].colobj != None:
                 mincol[1].colobj.damage()
 
         # If the ball hits the bottom of the screen, delete
-        if self.p.y > self.table.height:
-            self.table.balls_to_remove.append(self)
+        if not is_ghost and self.p.y > self.table.height:
+            self.table.removeball(self)
+
+        return bounced
 
     def draw(self, sfc):
         pygame.gfxdraw.aacircle(sfc, round(self.p.x), round(self.p.y),

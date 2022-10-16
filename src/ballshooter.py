@@ -63,7 +63,7 @@ class BallShooter:
             xx = [self.ball.p.x]
             yy = [self.ball.p.y]
             for _ in range(numsteps):
-                self.ball.step(False)
+                self.ball.step(is_ghost=True)
                 xx.append(self.ball.p.x)
                 yy.append(self.ball.p.y)
 

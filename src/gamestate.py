@@ -42,6 +42,8 @@ class GameState:
             if len(self.table.balls) == 0 and not self.bs.is_shooting:
                 self.state = State.SHOOTING
                 self.table.generate_and_shift_bricks()
+                self.bs.x = self.table.first_ball_position
+                self.table.first_ball_position = None
 
     def draw(self, sfc):
         self.bs.draw(sfc, draw_laser=self.state == State.SHOOTING)
