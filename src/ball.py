@@ -4,7 +4,7 @@ from pygame.math import Vector2
 
 class Ball:
     DEFAULT_RADIUS = 4
-    DEFAULT_SPEED = 16.0
+    DEFAULT_SPEED = 10.0
     DEFAULT_COLOR = (255, 255, 255)
 
     def __init__(self, table, position, direction):
