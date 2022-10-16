@@ -23,6 +23,9 @@ class Table:
         self.gamestate = gamestate
         self.width = config.screenres[0]
         self.height = config.screenres[1]
+        self.gridwidth = 7
+        self.gridheight = 7
+        self.bricksize = self.width / self.gridwidth
         self.bricks = []
         self.coins = []
         self.coins_to_remove = []
@@ -30,7 +33,6 @@ class Table:
         self.balls_to_remove = []
         self.colliders = []
         self.sim_numiters = 1
-        self.is_shifting = False
 
         # Collision with edges of the screen
         self.colliders += [Collider(0, 0, 0, self.height, None, True),
@@ -39,16 +41,13 @@ class Table:
                            Collider(0, 0, self.width, 0, None, False)]
 
         # Debug: add some bricks for testing
-        bb = [Brick(100, 100, size=100,  num=128),
-              Brick(200, 100, size=100,  num=128),
-              Brick(300, 100, size=100,  num=128),
-              Brick(400, 100, size=100,  num=128),
-              Brick(100, 200, size=100,  num=128),
-              Brick(200, 200, size=100,  num=128)]
-        for b in bb:
-            self.addbrick(b)
+        for i in range(4):
+            for j in range(1, 3):
+                b = Brick(i * self.bricksize, j * self.bricksize,
+                          size=self.bricksize + 1, num=128)
+                self.addbrick(b)
 
-        coin = Coin(50, 150)
+        coin = Coin(self.bricksize * 0.5, self.bricksize * 3.5)
         self.coins.append(coin)
 
     # Add brick and its colliders to table
@@ -81,36 +80,46 @@ class Table:
     # Shift all bricks downwards and generate next row.
     # Happens right before gamestate switches to shooting state
     def generate_and_shift_bricks(self):
-        self.is_shifting = True
+        # Shift bricks
+        for brick in self.bricks:
+            brick.y += self.bricksize
+
+        for coin in self.coins:
+            coin.p.y += self.bricksize
+
+        for col in self.colliders[4:]:
+            col.y0 += self.bricksize
+            col.y1 += self.bricksize
+
+        # TODO: If bricks reach the player, game over
+
+        # Generate new bricks
 
     def update(self):
-        if self.is_shifting:
-            pass
-        else:
-            # Update balls
-            for ball in self.balls:
-                ball.update()
+        # Update balls
+        for ball in self.balls:
+            ball.update()
 
-            # Update bricks
-            for brick in self.bricks:
-                brick.update()
+        # Update bricks
+        for brick in self.bricks:
+            brick.update()
 
-            # Update coins
-            for coin in self.coins:
-                coin.update()
+        # Update coins
+        for coin in self.coins:
+            coin.update()
 
-            # Remove depleted bricks
-            self._purge_bricks()
+        # Remove depleted bricks
+        self._purge_bricks()
 
-            # Remove balls
-            self.balls = [
-                b for b in self.balls if b not in self.balls_to_remove]
-            self.balls_to_remove = []
+        # Remove balls
+        self.balls = [
+            b for b in self.balls if b not in self.balls_to_remove]
+        self.balls_to_remove = []
 
-            # Remove coins
-            self.coins = [
-                c for c in self.coins if c not in self.coins_to_remove]
-            self.coins_to_remove = []
+        # Remove coins
+        self.coins = [
+            c for c in self.coins if c not in self.coins_to_remove]
+        self.coins_to_remove = []
 
     def draw(self, sfc):
         # Draw bricks
