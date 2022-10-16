@@ -15,18 +15,22 @@ class Ball:
         self.color = Ball.DEFAULT_COLOR
 
     def update(self):
+        # Move ball
         for _ in range(self.table.sim_numiters):
             self.step()
 
-        pad = 4
+        # Check for collision with the coins
         for coin in self.table.coins:
+            # If the coin has already been triggered, skip it
             if coin.triggered:
                 continue
-            if self.p.distance_squared_to(coin.p) + pad <= (self.radius + coin.radius)**2:
+            # If colliding with coin, trigger it, remove it from table, and add an extra ball
+            if self.p.distance_squared_to(coin.p) <= (self.radius + coin.radius)**2:
                 coin.triggered = True
                 self.table.coins_to_remove.append(coin)
                 self.table.gamestate.bs.num_balls += 1
 
+    # Cross product of two vectors
     def cross(v, w):
         return v.x * w.y - v.y * w.x
 
