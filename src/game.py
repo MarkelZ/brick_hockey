@@ -11,11 +11,12 @@ class Game:
         pygame.display.set_caption(config.title)
         self.win = pygame.display.set_mode(config.screenres)
         self.gamestate = GameState()
+        self.clock = pygame.time.Clock()
 
     def run(self):
         run = True
         while run:
-            pygame.time.delay(floor(1000 * config.spt))
+            self.clock.tick(config.tps)
 
             self.update()
             self.draw()
